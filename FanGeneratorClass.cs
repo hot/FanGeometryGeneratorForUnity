@@ -110,6 +110,28 @@ public class FanGeneratorClass : MonoBehaviour {
 
 	}
 
+	public static GameObject FanTriggerGenerator(float r, float angleInDegree, float height, int step)
+	{
+		GameObject go = new GameObject();
+		MeshCollider mc = go.AddComponent<MeshCollider>();
+		Mesh mesh = FanGenerator(r, angleInDegree, height, step);
+		mc.convex = true;
+		mc.isTrigger = true;
+		mc.sharedMesh = mesh;
+
+#if DEBUG_COLLIDER
+		MeshFilter mf = go.AddComponent<MeshFilter>();
+		mf.mesh = mesh;
+		MeshRenderer mr = go.AddComponent<MeshRenderer>();
+		mr.material = new Material (Shader.Find("Diffuse"));
+		mr.material.color = Color.green;
+#endif
+
+		return go;
+
+	}
+
+
 
 	#region test
 
@@ -118,6 +140,14 @@ public class FanGeneratorClass : MonoBehaviour {
 	public float height = 1f;
 	public int step = 2;
 
+	void Start()
+	{
+		GameObject ft = FanTriggerGenerator(r, angleInDegree, height, step);
+		ft.transform.position = Vector3.left;
+
+	}
+
+
 	void Update () {
 		MeshFilter mf = gameObject.GetComponent<MeshFilter>();
 		//Mesh mesh = FanPlaneGenerator(r, angleInDegree, step);
@@ -125,7 +155,7 @@ public class FanGeneratorClass : MonoBehaviour {
 		mf.mesh = mesh;
 		MeshCollider mc = gameObject.GetComponent<MeshCollider>();
 		mc.sharedMesh = mesh;
-	
+
 	}
 
 	void OnTriggerEnter(Collider other) {
