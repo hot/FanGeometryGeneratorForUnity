@@ -9,14 +9,14 @@ public class FanGeneratorClass : MonoBehaviour {
 	{
 		Mesh ret = new Mesh();
 		LinkedList<Vector3> points = new LinkedList<Vector3>();
-		points.AddLast(new Vector3(0, 0, 1f));
+		points.AddLast(new Vector3(0, 0, r));
 		float stepAng = Mathf.Deg2Rad * (angleInDegree/step);
 		for(int i = 1; i <= step; i++)
 		{
 			float angNow = stepAng * i;
 			float halfAng = angNow/2.0f;
-			float x = Mathf.Sin(halfAng);
-			float z = Mathf.Cos(halfAng);
+			float x = r * Mathf.Sin(halfAng);
+			float z = r * Mathf.Cos(halfAng);
 			points.AddFirst(new Vector3(-x, 0f, z));
 			points.AddLast(new Vector3(x, 0f, z));
 		}
@@ -41,24 +41,24 @@ public class FanGeneratorClass : MonoBehaviour {
 		
 	}
 
+
 	public Mesh FanGenerator(float r, float angleInDegree, float height, int step)
 	{
 		Mesh ret = new Mesh();
 		LinkedList<Vector3> points = new LinkedList<Vector3>();
-		points.AddLast(new Vector3(0, height, 1f));
-		points.AddLast(new Vector3(0, 0, 1f));
+		points.AddLast(new Vector3(0, height, r));
+		points.AddLast(new Vector3(0, 0, r));
 		float stepAng = Mathf.Deg2Rad * (angleInDegree/step);
 		for(int i = 1; i <= step; i++)
 		{
 			float angNow = stepAng * i;
 			float halfAng = angNow/2.0f;
-			float x = Mathf.Sin(halfAng);
-			float z = Mathf.Cos(halfAng);
+			float x = r * Mathf.Sin(halfAng);
+			float z = r * Mathf.Cos(halfAng);
 			points.AddFirst(new Vector3(-x, 0f, z));
 			points.AddFirst(new Vector3(-x, height, z));
 			points.AddLast(new Vector3(x, height, z));
 			points.AddLast(new Vector3(x, 0f, z));
-			Debug.Log("x:"+x+" z:"+z);
 		}
 
 		List<int> idx = new	List<int>();
@@ -112,10 +112,16 @@ public class FanGeneratorClass : MonoBehaviour {
 	}
 
 
+	#region test
+
+	public float r = 1f; 
+	public float angleInDegree = 90f;
+	public float height = 1f;
+	public int step = 2;
 	// Use this for initialization
-	void Start () {
+	void Update () {
 		MeshFilter mf = gameObject.GetComponent<MeshFilter>();
-		Mesh mesh = FanGenerator(1, 90, 1, 3);
+		Mesh mesh = FanGenerator(r, angleInDegree, height, step);
 		mf.mesh = mesh;
 		MeshCollider mc = gameObject.GetComponent<MeshCollider>();
 		mc.sharedMesh = mesh;
@@ -126,11 +132,7 @@ public class FanGeneratorClass : MonoBehaviour {
 		Destroy(other.gameObject);
 	}
 
-
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	#endregion
 
 
 }
